@@ -70,7 +70,7 @@ export default function Home() {
         <div className="w-full bg-black py-3">
           <div className="flex justify-around items-center flex-wrap p-3 pt-5">
             <Image
-              src="/images/Vector4.png"
+              src="/images/vector4.png"
               width={110}
               height={90}
               alt="Vector 4"
@@ -84,21 +84,21 @@ export default function Home() {
               className="px-2"
             />
             <Image
-              src="/images/Vector3.png"
+              src="/images/vector3.png"
               width={110}
               height={90}
               alt="Vector 3"
               className="px-2"
             />
             <Image
-              src="/images/Vector5.png"
+              src="/images/vector5.png"
               width={110}
               height={90}
               alt="Vector 5"
               className="py-3"
             />
             <Image
-              src="/images/Vector-1.png"
+              src="/images/vector-1.png"
               width={110}
               height={90}
               alt="Vector 1"
