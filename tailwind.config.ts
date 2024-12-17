@@ -12,6 +12,9 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        'hero-image': "url('/images/Rectangle2.png')",
+      },
     },
   },
   plugins: [],
