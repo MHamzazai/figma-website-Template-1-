@@ -1,0 +1,16 @@
+
+/* Define the font */
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2'),
+    url('/fonts/Satoshi-Bold.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+}
+
+/* Create a utility class for the font */
+.fontSatoshi {
+  font-family: 'Satoshi';
+  font-weight: 100;
+}
