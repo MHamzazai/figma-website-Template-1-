@@ -292,8 +292,8 @@ export default function ProductDetails() {
                                 <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <defs>
                                         <linearGradient id="halfGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                            <stop offset="50%" stop-color="gold" />
-                                            <stop offset="50%" stop-color="white" />
+                                            <stop offset="50%" stopColor="gold" />
+                                            <stop offset="50%" stopColor="white" />
                                         </linearGradient>
                                     </defs>
                                     <polygon points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5" fill="url(#halfGradient)" />
@@ -339,8 +339,8 @@ export default function ProductDetails() {
                                 <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <defs>
                                         <linearGradient id="halfGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                            <stop offset="50%" stop-color="gold" />
-                                            <stop offset="50%" stop-color="white" />
+                                            <stop offset="50%" stopColor="gold" />
+                                            <stop offset="50%" stopColor="white" />
                                         </linearGradient>
                                     </defs>
                                     <polygon points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5" fill="url(#halfGradient)" />
