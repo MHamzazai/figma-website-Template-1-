@@ -32,6 +32,16 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
           rel="stylesheet"
         />
+
+        <meta
+          property="og:image"
+          content="/images/preview-image.png"
+        />
+        <meta
+          name="twitter:image"
+          content="/images/preview-image.png"
+        />
+        {/* Other meta tags for SEO or description */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
