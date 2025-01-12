@@ -13,7 +13,6 @@ const boldFont = Montserrat({
 export default function Home() {
   return (
     <div className="w-full min-h-screen">
-
       <section>
         {/* hero section for small devices  */}
         <div className="">
@@ -22,7 +21,7 @@ export default function Home() {
 
         {/* hero section for large devices */}
         <div
-          className="flex flex-col lg:flex-row w-full h-max lg:h-[493px] xl:h-[593px] bg-[#F2F0F1] 
+          className="flex flex-col lg:flex-row w-full h-max lg:h-[493px] xl:h-screen bg-[#F2F0F1] 
         lg:bg-[url(/images/Rectangle2.png)] lg:bg-cover"
         >
           {/* hero section content */}
@@ -89,7 +88,6 @@ export default function Home() {
             />
           </div>
         </div>
-        
       </section>
 
       {/*  new arrivals section */}
