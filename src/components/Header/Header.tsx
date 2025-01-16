@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Link from "next/link";
 
 import { Poppins } from "next/font/google";
@@ -9,7 +8,6 @@ const poppinsFont = Poppins({
   weight: "800", // Adjust weight as needed
 });
 
-// const [ showLinks, setShowLinks ] = useState<boolean>(false);
 export default function Header() {
   return (
     <div className="bg-white w-full h-24 xl:h-28 ">
