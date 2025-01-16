@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 import { Poppins } from "next/font/google";
+import MenuToggler from "./MenuToggler";
 
 const poppinsFont = Poppins({
   subsets: ["latin"],
   weight: "800", // Adjust weight as needed
 });
 
+// const [ showLinks, setShowLinks ] = useState<boolean>(false);
 export default function Header() {
   return (
     <div className="bg-white w-full h-24 xl:h-28 ">
@@ -31,9 +33,9 @@ export default function Header() {
 
       {/* navigation bar */}
       <nav className="h-[calc(100% - 38px)] w-full flex items-center justify-between xl:py-2 2xl:py-2">
-        <div className="px-1 flex items-center">
-          <div className="flex">
-            <i className="ri-menu-line text-black text-2xl font-bold py-[11px] lg:hidden"></i>
+        <div className="px-0 flex items-center">
+          <div className="flex justify-center items-center">
+            <MenuToggler />
             <span className="px-3 py-2 xl:px-1">
               <Link href={"/"}>
                 <h1
@@ -45,6 +47,7 @@ export default function Header() {
               </Link>
             </span>
           </div>
+
           <div
             className="hidden lg:flex items-center justify-center gap-4 lg:px-4 lg:gap-7 xl:px-3
                     xl:gap-6
@@ -79,6 +82,7 @@ export default function Header() {
                         -translate-y-1/2 text-gray-600"
             ></i>
           </form>
+
           <div className="">
             <i className="ri-search-line text-2xl px-1 font-bold lg:hidden"></i>
             <i className="ri-shopping-cart-line text-2xl px-3 font-bold 2xl:mr-2"></i>

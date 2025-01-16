@@ -21,7 +21,7 @@ export default function Home() {
 
         {/* hero section for large devices */}
         <div
-          className="flex flex-col lg:flex-row w-full h-max lg:h-[493px] xl:h-[655px] bg-[#F2F0F1] 
+          className="flex flex-col lg:flex-row w-full h-max lg:h-[493px] xl:h-[660px] bg-[#F2F0F1] 
         lg:bg-[url(/images/Rectangle2.png)] lg:bg-cover"
         >
           {/* hero section content */}
@@ -66,7 +66,7 @@ export default function Home() {
               className="px-2"
             />
             <Image
-              src="/brandsName/Vector3.png" 
+              src="/brandsName/Vector3.png"
               width={110}
               height={90}
               alt="Vector 3"
@@ -805,14 +805,18 @@ export default function Home() {
           className="flex justify-center items-center flex-col lg:flex-row
         w-full h-full space-y-5 mb-4 lg:space-x-3"
         >
-          <img
+          <Image
             src="/images/casual-image.png"
             alt="image"
+            width={800}
+            height={800}
             className="w-[80%] md:w-[50%] lg:w-[30%]"
           />
-          <img
+          <Image
             src="/images/formal-image.png"
             alt="image"
+            width={800}
+            height={800}
             className="w-[90%] md:w-[60%] lg:w-[48%]"
           />
         </div>
@@ -821,14 +825,18 @@ export default function Home() {
           className="flex justify-center items-center flex-col lg:flex-row
         w-full h-full space-y-5 mb-4 lg:space-x-3"
         >
-          <img
+          <Image
             src="/images/party.png"
             alt="image"
+            width={800}
+            height={800}
             className="w-[90%] md:w-[60% lg:w-[40%]"
           />
-          <img
+          <Image
             src="/images/gym.png"
             alt="image"
+            width={800}
+            height={800}
             className="w-[90%] md:w-[50%] lg:w-[20%]"
           />
         </div>
