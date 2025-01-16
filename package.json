@@ -1,5 +1,5 @@
 {
-  "name": "blogs-website",
+  "name": "figma-website-template1",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@next/font": "^14.2.15",
+    "@sanity/vision": "^3.70.0",
     "next": "14.2.15",
+    "next-sanity": "^9.8.37",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sanity": "^3.70.0"
   },
   "devDependencies": {
     "@types/node": "^20",

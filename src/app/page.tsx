@@ -21,11 +21,11 @@ export default function Home() {
 
         {/* hero section for large devices */}
         <div
-          className="flex flex-col lg:flex-row w-full h-max lg:h-[493px] xl:h-screen bg-[#F2F0F1] 
+          className="flex flex-col lg:flex-row w-full h-max lg:h-[493px] xl:h-[655px] bg-[#F2F0F1] 
         lg:bg-[url(/images/Rectangle2.png)] lg:bg-cover"
         >
           {/* hero section content */}
-          <div className="hidden lg:flex flex-col justify-center items-start w-[43%] xl:w-[50%] bg-blac h-fit my-20 px-2">
+          <div className="hidden lg:flex flex-col justify-center items-start w-[43%] xl:w-[50%] h-fit my-20 lg:py-20 px-2">
             <h1
               className={`${boldFont.className} uppercase text-[24px] tracking-normal leading-tight 
               md:text-3xl md:text-center lg:text-left lg:px-2 lg:text-4xl xl:text-6xl xl:px-8 xl:leading-[63px]`}
@@ -52,35 +52,35 @@ export default function Home() {
         <div className="w-full bg-black py-3 xl:py-1">
           <div className="flex justify-around items-center flex-wrap p-3 pt-5 xl:pt-4">
             <Image
-              src="/images/vector4.png"
+              src="/brandsName/Vector4.png"
               width={110}
               height={90}
               alt="Vector 4"
               className="px-2"
             />
             <Image
-              src="/images/vector2.png"
+              src="/brandsName/Vector2.png"
               width={70}
               height={90}
               alt="Vector 2"
               className="px-2"
             />
             <Image
-              src="/images/vector3.png"
+              src="/brandsName/Vector3.png" 
               width={110}
               height={90}
               alt="Vector 3"
               className="px-2"
             />
             <Image
-              src="/images/vector5.png"
+              src="/brandsName/vector5.png"
               width={110}
               height={90}
               alt="Vector 5"
               className="py-3"
             />
             <Image
-              src="/images/vector-1.png"
+              src="/brandsName/vector-1.png"
               width={110}
               height={90}
               alt="Vector 1"
