@@ -9,3 +9,4 @@ const sanityClient:ClientConfig = {
     apiVersion: "2025-01-05",
     useCdn: false,
 };
+export default sanityClient;
