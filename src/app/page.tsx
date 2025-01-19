@@ -2,7 +2,6 @@ import React from "react";
 import { Montserrat } from "next/font/google";
 import Hero from "@/components/HeroSection/Hero";
 import Feedback from "@/components/feedback/Feedback";
-import Link from "next/link";
 import Image from "next/image";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { ProductDataType } from "@/components/types/types";

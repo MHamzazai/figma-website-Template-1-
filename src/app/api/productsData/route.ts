@@ -1,4 +1,3 @@
-import { ProductDataType } from "@/components/types/types";
 import GetCategoryProduct from "@/sanity/sanity.query";
 import { NextResponse } from "next/server";
 
