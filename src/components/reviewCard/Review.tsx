@@ -1,5 +1,5 @@
 import React from 'react';
-import { reviewCardTypes } from '../types/FeedbackTypes';
+import { reviewCardTypes } from '../types/types';
 
 export default function ReviewCard(props: reviewCardTypes) {
     return (

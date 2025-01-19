@@ -4,13 +4,51 @@ import Hero from "@/components/HeroSection/Hero";
 import Feedback from "@/components/feedback/Feedback";
 import Link from "next/link";
 import Image from "next/image";
+import ProductCard from "@/components/ProductCard/ProductCard";
+import { ProductDataType } from "@/components/types/types";
 
 const boldFont = Montserrat({
   subsets: ["latin"],
   weight: "900",
 });
 
-export default function Home() {
+export default async function Home() {
+  // fetch data from api route for specific route
+  const response1 = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=hoodie`,
+    {
+      cache: "no-store",
+    }
+  );
+  // for section 2
+  const response2 = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=jeans`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  // for section 3
+  const response3 = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=shirt`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  // for section 4
+  const response4 = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=tshirt`,
+    {
+      cache: "no-store",
+    }
+  );
+  // converting the api data to json format
+  const section1: ProductDataType[] = await response1.json();
+  const section2: ProductDataType[] = await response2.json();
+  const section3: ProductDataType[] = await response3.json();
+  const section4: ProductDataType[] = await response4.json();
+
   return (
     <div className="w-full min-h-screen">
       <section>
@@ -90,714 +128,129 @@ export default function Home() {
         </div>
       </section>
 
-      {/*  new arrivals section */}
+      {/*  new arrival hoodies section */}
       <section id="new-arrivals">
         <div
           className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full border-b-2
-        border-gray-200"
+        border-gray-200 pb-28"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-20 text-center">
-            New Arrivals
+          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">
+            New Arrival Hoodies
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-3/4 bg-gray-20 h-[300px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/shirt1.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl "
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
+            {section1.map((item: ProductDataType, i: number) => {
+              return (
+                <ProductCard
+                  key={i}
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                  discountPercentage={item.discountPercentage}
+                  slug={item.slug}
+                  sizes={item.sizes}
+                  description={item.description}
+                  colors={item.colors}
                 />
-              </div>
-
-              <div className="pl-7 md:pl-12 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  T-shirt with Tape Details
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient
-                        id="halfGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop offset="50%" stopColor="gold" />
-                        <stop offset="50%" stopColor="white" />
-                      </linearGradient>
-                    </defs>
-                    <polygon
-                      points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5"
-                      fill="url(#halfGradient)"
-                    />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    4.5/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-                <h1 className="font-bold text-xl py-2">$120</h1>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[300px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/pent1.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl "
-                />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Skinny Fit Jeans
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient
-                        id="halfGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop offset="50%" stopColor="gold" />
-                        <stop offset="50%" stopColor="white" />
-                      </linearGradient>
-                    </defs>
-                    <polygon
-                      points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5"
-                      fill="url(#halfGradient)"
-                    />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    3.5/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-
-                <div className="flex  items-center space-x-2">
-                  <h1 className="font-bold text-xl py-2">$240</h1>
-                  <h1 className="text-gray-400 text-xl font-bold line-through">
-                    $260
-                  </h1>
-                  <h1 className="bg-gray-200 text-red-600 px-2 rounded-xl text-sm">
-                    -20%
-                  </h1>
-                </div>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[295px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/shirt2.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl "
-                />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Checkered Shirt
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient
-                        id="halfGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop offset="50%" stopColor="gold" />
-                        <stop offset="50%" stopColor="white" />
-                      </linearGradient>
-                    </defs>
-                    <polygon
-                      points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5"
-                      fill="url(#halfGradient)"
-                    />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    4.5/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-                <h1 className="font-bold text-xl py-2">$180</h1>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[290px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/shirt3.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl "
-                />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Sleeve Striped T-shirt
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient
-                        id="halfGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop offset="50%" stopColor="gold" />
-                        <stop offset="50%" stopColor="white" />
-                      </linearGradient>
-                    </defs>
-                    <polygon
-                      points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5"
-                      fill="url(#halfGradient)"
-                    />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    4.5/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-
-                <div className="flex  items-center space-x-2">
-                  <h1 className="font-bold text-xl py-2">$130</h1>
-                  <h1 className="text-gray-400 text-xl font-bold line-through">
-                    $160
-                  </h1>
-                  <h1 className="bg-gray-200 text-red-600 px-2 rounded-xl text-sm">
-                    -30%
-                  </h1>
-                </div>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-10 mb-14">
-            <button
-              className="text-xl border-2 border-gray-400 px-20 rounded-3xl py-[9px] text-center 
-            lg:hover:scale-110 lg:hover:bg-gray-100 lg:hover:border-black transition-all"
-            >
-              View All
-            </button>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* top selling section */}
+      {/* top selling jeans section */}
       <section>
-        <div className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-16 text-center">
-            Top Selling
+        <div
+          className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full border-b-2
+        border-gray-200 pb-28"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">
+            Top Selling Jeans
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[290px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/shirt4.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl"
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
+            {section2.map((item: ProductDataType, i: number) => {
+              return (
+                <ProductCard
+                  key={i}
+                  colors={item.colors}
+                  sizes={item.sizes}
+                  description={item.description}
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                  discountPercentage={item.discountPercentage}
+                  slug={item.slug}
                 />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Vertical Striped Shirt
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    5.0/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-
-                <div className="flex  items-center space-x-2">
-                  <h1 className="font-bold text-xl py-2">$212</h1>
-                  <h1 className="text-gray-400 text-xl font-bold line-through">
-                    $232
-                  </h1>
-                  <h1 className="bg-gray-200 text-red-600 px-2 rounded-xl text-sm">
-                    -20%
-                  </h1>
-                </div>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[290px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/shirt5.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl "
-                />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Courage Graphic T-shirt
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-
-                  <h1 className="text-sm text-black">
-                    4.0/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-
-                <div className="flex  items-center space-x-2">
-                  <h1 className="font-bold text-xl py-2">$145</h1>
-                </div>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[290px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/shorts.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-2xl "
-                />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Loose Fit Bermuda Shorts
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    3.0/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-                <h1 className="font-bold text-xl py-2">$80</h1>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="overflow-hidden hover:shadow-md hover:rounded-lg cursor-pointer hover:-translate-y-2 transition-all relative">
-              <div className="w-2/3 bg-gray-20 h-[300px] p-4 overflow-hidden mx-auto">
-                <img
-                  src="/images/pent2.png"
-                  alt="Product 1"
-                  className="h-full w-full object-cover rounded-[12px] "
-                />
-              </div>
-
-              <div className="pl-7 md:pl-16 xl:pl-16 bg-white">
-                <h3 className="text-xl font-bold text-black">
-                  Faded Skinny Jeans
-                </h3>
-                {/* stars */}
-                <div className="flex space-x-2">
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    className="w-4 fill-[#facc15]"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                  </svg>
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient
-                        id="halfGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop offset="50%" stopColor="gold" />
-                        <stop offset="50%" stopColor="white" />
-                      </linearGradient>
-                    </defs>
-                    <polygon
-                      points="12,2 15,8.5 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8.5"
-                      fill="url(#halfGradient)"
-                    />
-                  </svg>
-                  <h1 className="text-sm text-black">
-                    4.5/<span className="text-gray-500 px-[2px]">5</span>
-                  </h1>
-                </div>
-
-                <div className="flex  items-center space-x-2">
-                  <h1 className="font-bold text-xl py-2">$210</h1>
-                </div>
-
-                <div className="w-full flex justify-around items-center mb-3">
-                  <Link
-                    href={"/productDetails"}
-                    className="capitalize text-gray-400 border-2 text-center w-fit px-2 py-1
-                  rounded-2xl lg:hover:bg-gray-300 lg:hover:px-4 transition-all lg:hover:text-black lg:hover:font-bold"
-                  >
-                    view details
-                  </Link>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
+        </div>
+      </section>
 
-          <div className="text-center mt-10 mb-14">
-            <button
-              className="text-xl border-2 border-gray-400 px-20 rounded-3xl py-[9px] text-center 
-            lg:hover:scale-110 lg:hover:bg-gray-100 lg:hover:border-black transition-all"
-            >
-              View All
-            </button>
+      {/* classic shirts section */}
+      <section>
+        <div
+          className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full border-b-2
+        border-gray-200 pb-28"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">
+            Classic Shirts
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
+            {section3.map((item: ProductDataType, i: number) => {
+              return (
+                <ProductCard
+                  key={i}
+                  colors={item.colors}
+                  sizes={item.sizes}
+                  description={item.description}
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                  discountPercentage={item.discountPercentage}
+                  slug={item.slug}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* light and bright t-shirts section */}
+      <section>
+        <div
+          className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full border-b-2
+        border-gray-200 pb-28"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">
+            Light And Bright T-Shirts
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
+            {section4.map((item: ProductDataType, i: number) => {
+              return (
+                <ProductCard
+                  key={i}
+                  name={item.name}
+                  colors={item.colors}
+                  sizes={item.sizes}
+                  description={item.description}
+                  price={item.price}
+                  image={item.image}
+                  discountPercentage={item.discountPercentage}
+                  slug={item.slug}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Dress style section */}
       <div className="bg-[#F0F0F0] mt-16 w-[90%] lg:w-[95%] h-fit rounded-[20px] mx-auto mb-10 flex flex-col items-center">
-        <div
-          className="uppercase font-extrabold text-2xl md:text-3xl
-        text-center font-[sans-serif] py-10 px-4 lg:text-5xl"
-        >
+        <div className="uppercase font-extrabold text-2xl md:text-3xl text-center font-[sans-serif] pt-8 px-4 lg:text-5xl lg:hover:scale-110 transition-all duration-300 lg:hover:border-b-2 lg:hover:text-gray-900 mb-10 pb-4 border-gray-600">
           Browse by dress style
         </div>
 
@@ -810,14 +263,14 @@ export default function Home() {
             alt="image"
             width={800}
             height={800}
-            className="w-[80%] md:w-[50%] lg:w-[30%]"
+            className="w-[80%] md:w-[50%] lg:w-[30%] lg:hover:scale-105 transition-all duration-500 cursor-pointer"
           />
           <Image
             src="/images/formal-image.png"
             alt="image"
             width={800}
             height={800}
-            className="w-[90%] md:w-[60%] lg:w-[48%]"
+            className="w-[90%] md:w-[60%] lg:w-[48%] lg:hover:scale-105 transition-all duration-500 cursor-pointer"
           />
         </div>
 
@@ -830,14 +283,14 @@ export default function Home() {
             alt="image"
             width={800}
             height={800}
-            className="w-[90%] md:w-[60% lg:w-[40%]"
+            className="w-[90%] md:w-[60% lg:w-[40%] lg:hover:scale-105 transition-all duration-500 cursor-pointer"
           />
           <Image
             src="/images/gym.png"
             alt="image"
             width={800}
             height={800}
-            className="w-[90%] md:w-[50%] lg:w-[20%]"
+            className="w-[90%] md:w-[50%] lg:w-[20%] lg:hover:scale-105 transition-all duration-500 cursor-pointer"
           />
         </div>
       </div>

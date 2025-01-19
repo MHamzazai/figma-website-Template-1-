@@ -1,5 +1,5 @@
 import React from 'react';
-import { feedbackCardTypes } from '../types/FeedbackTypes';
+import { feedbackCardTypes } from '../types/types';
 
 export default function Feedback(props: feedbackCardTypes) {
     return (

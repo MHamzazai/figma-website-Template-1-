@@ -1,4 +1,4 @@
-import { ClientConfig } from "next-sanity";
+import { ClientConfig, createClient } from "next-sanity";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -9,4 +9,4 @@ const sanityClient:ClientConfig = {
     apiVersion: "2025-01-05",
     useCdn: false,
 };
-export default sanityClient;
+export default createClient(sanityClient);

@@ -6,10 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import-data": "node scripts/importData.mjs"
   },
   "dependencies": {
-    "@next/font": "^14.2.15",
     "@sanity/vision": "^3.70.0",
     "dotenv": "^16.4.7",
     "next": "14.2.15",

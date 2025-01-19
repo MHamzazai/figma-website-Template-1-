@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "@/styles/fonts.module.css";
-import { cartCardTypes } from '../types/FeedbackTypes';
+import { cartCardTypes } from '../types/types';
 
 export default function CartCard(props: cartCardTypes) {
     return (

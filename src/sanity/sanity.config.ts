@@ -1,16 +1,20 @@
+'use client';
 import dotenv from "dotenv";
 dotenv.config(); // load the environment vaiables
 
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import mainSchema from "./schema/mainSchema";
 
 export const sanityConfig = defineConfig({
-    name: "MarketPlace Builder",
+    name: "MarketPlace-Builder",
     title: "A General E-commerce Website",
     plugins: [structureTool(), visionTool()],
     basePath: "/sanityStudio",
-    schema: {},
+    schema: {
+        types: mainSchema,
+    },
     projectId: process.env.SANITY_PROJECT_ID || "gz7a88fw",
     dataset: process.env.SANITY_DATASET || "production",
 }); 
