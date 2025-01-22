@@ -64,7 +64,7 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
         </div>
 
         {/* sub right / sub bottom side */}
-        <div className="flex-1">
+        <div className="flex-1" key={params.id}>
           <div className="mt-10 border-b-[1px] border-gray-300">
             <h1
               className="font-[sans-serif] font-extrabold text-2xl pr-10 uppercase pb-1 md:pr-0 lg:text-4xl lg:hover:text-gray-700 lg:hover:cursor-pointer lg:hover:scale-105 transition-all duration-500 w-fit"
@@ -242,6 +242,7 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
 
             </div>
           </div>
+
         </div>
       </div>
     </div>
