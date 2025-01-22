@@ -4,9 +4,9 @@ import { GetUserClickProduct } from "@/sanity/sanity.query";
 import { ProductDataType } from "@/components/types/types";
 import { notFound } from "next/navigation";
 import ProductPage from "../../../../utils/ProductDetailsPage/ProductDetailsPage";
-import DisplayReview from "@/components/reviewCard/displayReview";
+import DisplayReview from "../../../components/Feedback/DisplayFeedback";
 import Image from "next/image";
-import ReviewButton from "@/components/reviewCard/reviewButton";
+import ReviewButton from "../../../components/Feedback/FeeebackButton";
 
 export async function generateMetaData({
   params,
