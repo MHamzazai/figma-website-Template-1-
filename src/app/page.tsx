@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ProductDataType } from "@/components/types/types";
 import { Archivo_Black } from "next/font/google";
 import Link from "next/link";
-import FeedbackButton from "../components/Feedback/FeedbackButton";
+import FeedbackButton from "../components/Feedback/feedbackButton";
 import DisplayFeedback from "../components/Feedback/DisplayFeedback";
 import Hero from "@/components/HeroSection/Hero";
 import ProductCard from "@/components/ProductCard/ProductCard";
@@ -317,6 +317,7 @@ export default async function Home() {
               our happy customers
             </h1>
           </div>
+          {/* feedback which open the modal  */}
           <div className="w-1/3 text-end text-xl lg:pr-8 space-x-3 lg:space-x-7 pr-2 flex flex-col md:flex-row justify-center items-center">
             <FeedbackButton />
           </div>

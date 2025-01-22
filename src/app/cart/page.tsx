@@ -92,7 +92,7 @@ export default function Cart() {
                         })}
                     </div>
                     : // if the cart is empty  
-                    <h1 className="text-3xl font-bold flex justify-center items-center">Cart is Empty</h1> 
+                    <h1 className="text-3xl font-bold flex justify-center items-center">Cart is Empty</h1>
 
             )}
 

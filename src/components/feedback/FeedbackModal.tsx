@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { feedbackModalProps } from '../types/types';
 
-const FeedbackModal: React.FC<feedbackModalProps> = ({ isOpen, onClose, onSubmit }) => {
+export default function FeedbackModal({ isOpen, onClose, onSubmit }: feedbackModalProps) {
     const [userName, setUserName] = useState('');
     const [description, setDescription] = useState('');
     const [starsNumbers, setStarsNumbers] = useState<number>(0);
@@ -74,4 +74,3 @@ const FeedbackModal: React.FC<feedbackModalProps> = ({ isOpen, onClose, onSubmit
     );
 };
 
-export default FeedbackModal;

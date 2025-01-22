@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
-import FeedbackModal from './FeedbackModal';
 import { feedbackCardTypes } from '../types/types';
 import sanityClient from '@/sanity/sanity.client';
+import FeedbackModal from './feedbackModal';
 
-const FeedbackButton: React.FC = () => {
+export default function FeedbackButton() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
     const [errorMessage, setErrorMessage] = useState<string | null>(null); // Store error message
@@ -56,5 +56,3 @@ const FeedbackButton: React.FC = () => {
         </div>
     );
 };
-
-export default FeedbackButton;
