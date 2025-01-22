@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ProductDataType } from "@/components/types/types";
 import { Archivo_Black } from "next/font/google";
 import Link from "next/link";
-import FeedbackButton from "../components/Feedback/FeeebackButton";
+import FeedbackButton from "../components/Feedback/FeedbackButton";
 import DisplayFeedback from "../components/Feedback/DisplayFeedback";
 import Hero from "@/components/HeroSection/Hero";
 import ProductCard from "@/components/ProductCard/ProductCard";
@@ -11,7 +11,7 @@ const boldFont = Archivo_Black({
   subsets: ["latin"],
   weight: "400",
 });
-
+  
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
