@@ -25,10 +25,8 @@ export default function Feedback(props: FeedbackProps) {
                             className="w-4 h-4"
                         />
                     </div>
-                    <div className="overflow-hidden">
-                        <p className="text-gray-500">
-                            &quot;{props.description}&quot;
-                        </p>
+                    <div className="overflow-hidden text-gray-500">
+                        &quot;{props.description}&quot;
                     </div>
                 </div>
 

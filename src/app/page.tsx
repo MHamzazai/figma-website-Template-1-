@@ -11,7 +11,7 @@ const boldFont = Archivo_Black({
   subsets: ["latin"],
   weight: "400",
 });
-  
+
 export default async function Home() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -123,7 +123,7 @@ export default async function Home() {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6">
-            {/* component which display hhe data */}
+            {/* component which display the data */}
             {data1 ? (
               data1.map((item: ProductDataType, i: number) => {
                 return (
