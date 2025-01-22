@@ -3,8 +3,8 @@ import { ProductDataType } from "@/components/types/types";
 import { Archivo_Black } from "next/font/google";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import FeedbackButton from "@/components/Feedback/FeeebackButton";
-import DisplayFeedback from "@/components/Feedback/DisplayFeedback";
+import FeedbackButton from "../components/Feedback/FeeebackButton";
+import DisplayFeedback from "../components/Feedback/DisplayFeedback";
 
 
 const Hero = dynamic(() => import("@/components/HeroSection/Hero"));
