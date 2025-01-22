@@ -44,7 +44,7 @@ export default function OrderNow() {
       alert("Insufficient Quantity only '10' products Available");
       return;
     }
-    
+
     const orderDetails = {
       productId: productData?.id || '',
       productName: productData?.name || '',
@@ -274,7 +274,7 @@ export default function OrderNow() {
 
                 {productData?.sizes.map((item: string, index: number) =>
                 (
-                  <option value={item} key={index} aria-required>
+                  <option value={item} key={index}>
                     {item}
                   </option>
                 )
@@ -299,7 +299,7 @@ export default function OrderNow() {
 
                 {productData?.colors.map((item: string, index: number) =>
                 (
-                  <option value={item} key={index} aria-required>
+                  <option value={item} key={index}>
                     {item}
                   </option>
                 )
@@ -329,10 +329,12 @@ export default function OrderNow() {
 
         <button
           type="submit"
-          className="p-2 bg-blue-600 text-white rounded w-2/3 lg:w-1/2 lg:hover:scale-105 transition-all duration-500"
+          disabled={isSubmitting}
+          className={`p-2 bg-blue-600 text-white rounded w-2/3 lg:w-1/2 ${isSubmitting ? 'opacity-50' : 'lg:hover:scale-105 transition-all duration-500'}`}
         >
-          Place Order
+          {isSubmitting ? 'Submitting...' : 'Place Order'}
         </button>
+
 
       </form>
     </div>

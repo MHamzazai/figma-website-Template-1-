@@ -1,5 +1,5 @@
 'use client';
-import { DeleteSingleFeedback, DeleteSingleReview, GetReviewData } from "@/sanity/sanity.query";
+import { DeleteSingleReview, GetReviewData } from "@/sanity/sanity.query";
 import { reviewCardTypes } from "../types/types";
 import { useState, useEffect } from "react";
 import ReviewCard from "./ReviewCard";

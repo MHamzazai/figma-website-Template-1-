@@ -44,8 +44,10 @@ export default function ReviewCard(props: ReviewkProps) {
                     <div className="flex items-center space-x-2 mb-4">
                         <h1 className="font-bold py-2">{props.userName}</h1>
                         {/* Tick Image */}
-                        <img
+                        <Image
                             src="/images/tick.png"
+                            width={20}
+                            height={20}
                             alt="Verified tick"
                             className="w-4 h-4"
                         />

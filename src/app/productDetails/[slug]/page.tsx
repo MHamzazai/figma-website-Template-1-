@@ -8,19 +8,6 @@ import DisplayReview from "@/components/reviewCard/displayReview";
 import Image from "next/image";
 import ReviewButton from "@/components/reviewCard/reviewButton";
 
-export async function generateMetaData({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const { slug } = params;
-  const productData: ProductDataType | null = await GetUserClickProduct(slug);
-
-  if (!productData) {
-    return { notFound: true }; // Return 404 metadata if no product found
-  }
-}
-
 export default async function ProductDetailsPage({
   params,
 }: {

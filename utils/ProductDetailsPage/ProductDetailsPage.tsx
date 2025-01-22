@@ -138,9 +138,8 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
             <div className="flex space-x-3 ml-1">
               {params.colors.map((item: string, i: number) => {
                 return (
-                  <div className="">
+                  <div className="" key={i}>
                     <button
-                      key={i}
                       className="bg-gray-200 px-4 py-1 rounded-xl lg:hover:scale-105 transition-all duration-300 cursor-pointer lg:hover:bg-black lg:hover:text-white tracking-wide focus:bg-black focus:text-white font-semibold"
                     >
                       {item}
@@ -162,9 +161,8 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
             <div className="flex space-x-3 ml-1">
               {params.sizes.map((item: string, i: number) => {
                 return (
-                  <div className="">
+                  <div className="" key={i}>
                     <button
-                      key={i}
                       className="bg-gray-200 px-6 py-1 rounded-xl lg:hover:scale-105 transition-all duration-300 cursor-pointer lg:hover:bg-black lg:hover:text-white tracking-wide font-semibold"
                       type="button"
                     >
@@ -221,7 +219,7 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
                   onClick={handleAddtocartClick}
                   className={`${styles.fontSatoshi}
                                 text-white cursor-pointer bg-black text-center py-2 rounded-3xl
-                                lg:hover:scale-110 lg:focus:bg-gray-800 transition-all px-8`}
+                                lg:hover:scale-110 lg:focus:bg-gray-800 transition-all px-3`}
                 >
                   Add to Cart
                 </Link>
@@ -234,7 +232,7 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
                   prefetch={true}
                   className={`${styles.fontSatoshi}
                                 text-white cursor-pointer bg-black tracking-wide text-center py-2 rounded-3xl
-                                lg:hover:scale-110 transition-all px-8`}
+                                lg:hover:scale-110 transition-all px-3`}
                 >
                   Order Now
                 </Link>
