@@ -46,6 +46,7 @@ const productsData = defineType({
           { title: "Jeans", value: "jeans" },
           { title: "Hoddie", value: "hoodie" },
           { title: "Shirt", value: "shirt" },
+          { title: "Details Section", value: "detailsSection" },
         ],
       },
     }),

@@ -1,5 +1,6 @@
-import React from 'react';
 import { Poppins } from 'next/font/google';
+import Image from 'next/image';
+import React from 'react';
 
 const poppinsFont = Poppins({
     subsets: ['latin'],
@@ -113,11 +114,11 @@ export default function Footer() {
                         <div className="flex flex-col lg:flex-row justify-between items-center text-center pt-4 text-sm text-gray-700">
                             <p>Shop.co &copy; 2000-2023, All Rights Reserved</p>
                             <div className="flex gap-3 mt-4 lg:mt-0">
-                                <img src="https://static.vecteezy.com/system/resources/previews/020/336/493/non_2x/visa-logo-visa-icon-free-free-vector.jpg" alt="Visa" className="w-12 rounded-md xl:w-16 h-10" />
-                                <img src="https://i.pinimg.com/736x/56/fd/48/56fd486a48ff235156b8773c238f8da9.jpg" alt="Mastercard" className="w-12 rounded-md xl:w-16 h-10" />
-                                <img src="https://thumbs.dreamstime.com/b/paypal-logo-paypal-logo-white-background-vector-format-avaliable-124289807.jpg" alt="PayPal" className="w-12 xl:w-16 rounded-md h-10" />
-                                <img src="https://thumbs.dreamstime.com/b/apple-pay-logo-white-background-vector-format-available-148122496.jpg" alt="Apple Pay" className="w-12 xl:w-16 rounded-md h-10" />
-                                <img src="https://thumbs.dreamstime.com/b/google-pay-logo-white-background-vector-format-available-google-pay-logo-136960347.jpg" alt="G-pay image" className='rounded-md w-12 xl:w-16 h-10' />
+                                <Image width={30} height={30} src="https://static.vecteezy.com/system/resources/previews/020/336/493/non_2x/visa-logo-visa-icon-free-free-vector.jpg" alt="Visa" className="w-12 rounded-md xl:w-16 h-10" />
+                                <Image width={30} height={30} src="https://i.pinimg.com/736x/56/fd/48/56fd486a48ff235156b8773c238f8da9.jpg" alt="Mastercard" className="w-12 rounded-md xl:w-16 h-10" />
+                                <Image width={30} height={30} src="https://thumbs.dreamstime.com/b/paypal-logo-paypal-logo-white-background-vector-format-avaliable-124289807.jpg" alt="PayPal" className="w-12 xl:w-16 rounded-md h-10" />
+                                <Image width={30} height={30} src="https://thumbs.dreamstime.com/b/apple-pay-logo-white-background-vector-format-available-148122496.jpg" alt="Apple Pay" className="w-12 xl:w-16 rounded-md h-10" />
+                                <Image width={30} height={30} src="https://thumbs.dreamstime.com/b/google-pay-logo-white-background-vector-format-available-google-pay-logo-136960347.jpg" alt="G-pay image" className='rounded-md w-12 xl:w-16 h-10' />
                             </div>
                         </div>
                     </div>

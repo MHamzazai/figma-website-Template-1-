@@ -1,52 +1,39 @@
-import React from "react";
-import { Montserrat } from "next/font/google";
-import Hero from "@/components/HeroSection/Hero";
-import Feedback from "@/components/feedback/Feedback";
 import Image from "next/image";
-import ProductCard from "@/components/ProductCard/ProductCard";
 import { ProductDataType } from "@/components/types/types";
+import { Archivo_Black } from "next/font/google";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import FeedbackButton from "@/components/Feedback/FeeebackButton";
+import DisplayFeedback from "@/components/Feedback/DisplayFeedback";
 
-const boldFont = Montserrat({
+
+const Hero = dynamic(() => import("@/components/HeroSection/Hero"));
+const ProductCard = dynamic(
+  () => import("@/components/ProductCard/ProductCard")
+);
+
+const boldFont = Archivo_Black({
   subsets: ["latin"],
-  weight: "900",
+  weight: "400",
 });
 
 export default async function Home() {
-  // fetch data from api route for specific route
-  const response1 = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=hoodie`,
-    {
-      cache: "no-store",
-    }
-  );
-  // for section 2
-  const response2 = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=jeans`,
-    {
-      cache: "no-store",
-    }
-  );
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-  // for section 3
-  const response3 = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=shirt`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  // for section 4
-  const response4 = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URl}/api/productsData?category=tshirt`,
-    {
-      cache: "no-store",
-    }
-  );
-  // converting the api data to json format
-  const section1: ProductDataType[] = await response1.json();
-  const section2: ProductDataType[] = await response2.json();
-  const section3: ProductDataType[] = await response3.json();
-  const section4: ProductDataType[] = await response4.json();
+  const [data1, data2, data3, data4] = await Promise.all([
+    fetch(`${baseUrl}/api/productsData?category=hoodie`, {
+      cache: "no-cache",
+    }).then((res) => res.json() as Promise<ProductDataType[]>),
+    fetch(`${baseUrl}/api/productsData?category=jeans`, {
+      cache: "no-cache",
+    }).then((res) => res.json() as Promise<ProductDataType[]>),
+    fetch(`${baseUrl}/api/productsData?category=shirt`, {
+      cache: "no-cache",
+    }).then((res) => res.json() as Promise<ProductDataType[]>),
+    fetch(`${baseUrl}/api/productsData?category=tshirt`, {
+      cache: "no-cache",
+    }).then((res) => res.json() as Promise<ProductDataType[]>),
+  ]);
 
   return (
     <div className="w-full min-h-screen">
@@ -65,23 +52,26 @@ export default async function Home() {
           <div className="hidden lg:flex flex-col justify-center items-start w-[43%] xl:w-[50%] h-fit my-20 lg:py-20 px-2">
             <h1
               className={`${boldFont.className} uppercase text-[24px] tracking-normal leading-tight 
-              md:text-3xl md:text-center lg:text-left lg:px-2 lg:text-4xl xl:text-6xl xl:px-8 xl:leading-[63px]`}
+              md:text-3xl md:text-center lg:text-left lg:px-2 lg:text-4xl xl:text-6xl xl:px-8 xl:leading-[63px]
+              lg:hover:scale-105 transition-all duration-500 lg:hover:text-gray-800`}
             >
               find clothes
               <span className="pl-1 xl:pl-3 lg:pl-2">that matches</span> your
               style
             </h1>
-            <p className="text-sm lg:mt-2 lg:pl-2 text-gray-500 md:text-lg lg:text-base xl:text-lg xl:pl-9">
+            <p className="text-sm lg:mt-2 lg:pl-2 text-gray-500 md:text-lg lg:text-base xl:text-lg xl:pl-9 lg:hover:opacity-75   transition-all duration-500">
               Browse through our diverse range of meticulously crafted garments,
               designed to bring out your individuality and cater to your sense
               of style.
             </p>
-            <button
+            <Link
+              href={"#new-arrivals"}
+              prefetch={true}
               className="bg-black text-white px-6 py-2 rounded-3xl mx-1 mt-2 lg:mt-6 text-sans 
-            md:mx-52 lg:mx-0 lg:w-fit xl:ml-14 xl:px-14"
+            md:mx-52 lg:mx-0 lg:w-fit xl:ml-14 xl:px-14 g:hover:scale-105 lg:hover:opacity-55 lg:hover:scale-105 transition-all duration-500"
             >
               Shop Now
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -130,29 +120,36 @@ export default async function Home() {
       {/*  new arrival hoodies section */}
       <section id="new-arrivals">
         <div
-          className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full border-b-2
+          className="font-[sans-serif] py-4 mx-auto lg:max-w-[98%] sm:max-w-full border-b-2
         border-gray-200 pb-28"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold text-black my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">
             New Arrival Hoodies
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
-            {section1.map((item: ProductDataType, i: number) => {
-              return (
-                <ProductCard
-                  key={i}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  discountPercentage={item.discountPercentage}
-                  slug={item.slug}
-                  sizes={item.sizes}
-                  description={item.description}
-                  colors={item.colors}
-                />
-              );
-            })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6">
+            {/* component which display hhe data */}
+            {data1 ? (
+              data1.map((item: ProductDataType, i: number) => {
+                return (
+                  <div className="" key={i}>
+                    <ProductCard
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      description={item.description}
+                      colors={item.colors}
+                      sizes={item.sizes}
+                      isNew={item.isNew}
+                      slug={item.slug}
+                      image={item.image}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <h1>No data !</h1>
+            )}
           </div>
         </div>
       </section>
@@ -167,22 +164,29 @@ export default async function Home() {
             Top Selling Jeans
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
-            {section2.map((item: ProductDataType, i: number) => {
-              return (
-                <ProductCard
-                  key={i}
-                  colors={item.colors}
-                  sizes={item.sizes}
-                  description={item.description}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  discountPercentage={item.discountPercentage}
-                  slug={item.slug}
-                />
-              );
-            })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6">
+            {/* component which display hhe data */}
+            {data2 ? (
+              data2.map((item: ProductDataType, i: number) => {
+                return (
+                  <div className="" key={i}>
+                    <ProductCard
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      description={item.description}
+                      colors={item.colors}
+                      sizes={item.sizes}
+                      isNew={item.isNew}
+                      slug={item.slug}
+                      image={item.image}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <h1>No data !</h1>
+            )}
           </div>
         </div>
       </section>
@@ -197,22 +201,30 @@ export default async function Home() {
             Classic Shirts
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
-            {section3.map((item: ProductDataType, i: number) => {
-              return (
-                <ProductCard
-                  key={i}
-                  colors={item.colors}
-                  sizes={item.sizes}
-                  description={item.description}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  discountPercentage={item.discountPercentage}
-                  slug={item.slug}
-                />
-              );
-            })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6">
+            {/* component which display hhe data */}
+            {data3 ? (
+              data3.map((item: ProductDataType, i: number) => {
+                return (
+                  <div className="" key={i}
+                  >
+                    <ProductCard
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      description={item.description}
+                      colors={item.colors}
+                      sizes={item.sizes}
+                      isNew={item.isNew}
+                      slug={item.slug}
+                      image={item.image}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <h1>No data !</h1>
+            )}
           </div>
         </div>
       </section>
@@ -227,22 +239,29 @@ export default async function Home() {
             Light And Bright T-Shirts
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
-            {section4.map((item: ProductDataType, i: number) => {
-              return (
-                <ProductCard
-                  key={i}
-                  name={item.name}
-                  colors={item.colors}
-                  sizes={item.sizes}
-                  description={item.description}
-                  price={item.price}
-                  image={item.image}
-                  discountPercentage={item.discountPercentage}
-                  slug={item.slug}
-                />
-              );
-            })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6">
+            {/* component which display hhe data */}
+            {data4 ? (
+              data4.map((item: ProductDataType, i: number) => {
+                return (
+                  <div className="" key={i}>
+                    <ProductCard
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      description={item.description}
+                      colors={item.colors}
+                      sizes={item.sizes}
+                      isNew={item.isNew}
+                      slug={item.slug}
+                      image={item.image}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <h1>No data !</h1>
+            )}
           </div>
         </div>
       </section>
@@ -303,35 +322,16 @@ export default async function Home() {
               our happy customers
             </h1>
           </div>
-          <div className="w-1/3 text-end text-xl lg:pr-8 space-x-3 pr-2">
-            <i className="ri-arrow-left-line"></i>
-            <i className="ri-arrow-right-line"></i>
+          <div className="w-1/3 text-end text-xl lg:pr-8 space-x-3 lg:space-x-7 pr-2 flex flex-col md:flex-row justify-center items-center">
+            <FeedbackButton />
           </div>
         </div>
 
-        {/* cards */}
-        <div className="flex flex-col lg:flex-row mb-16">
-          <Feedback
-            name="Sarah M."
-            para="I'm blown away by the quality and style of the clothes I received
-          from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my
-          expectations."
-          />
-
-          <Feedback
-            name="Alex K."
-            para="Finding clothes that align with my personal style used to be a
-          challenge until I discovered Shop.co. The range of options they offer is trulyremarkable, catering
-          to a variety of tastes and occasions."
-          />
-
-          <Feedback
-            name="James L."
-            para="As someone who's always on the lookout for unique fashion pieces,
-          I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also
-          on-point with the latest trends."
-          />
+        {/* Feedback cards */}
+        <div className="">
+          <DisplayFeedback />
         </div>
+
       </div>
     </div>
   );

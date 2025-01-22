@@ -83,7 +83,9 @@ export default function Header() {
 
           <div className="">
             <i className="ri-search-line text-2xl px-1 font-bold lg:hidden"></i>
-            <i className="ri-shopping-cart-line text-2xl px-3 font-bold 2xl:mr-2"></i>
+            <Link href={"/cart"}>
+              <i className="ri-shopping-cart-line text-2xl px-3 font-bold 2xl:mr-2"></i>
+            </Link>
             <i
               className="ri-user-line text-xl px-[1.9px] py-[1px] font-bold border-[3px]
                         border-black w-8 h-8 rounded-2xl lg:mr-4 xl:mr-16 xl:text-2xl"
