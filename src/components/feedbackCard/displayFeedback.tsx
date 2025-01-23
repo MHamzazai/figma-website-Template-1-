@@ -1,7 +1,7 @@
 'use client';
 import { DeleteSingleFeedback, GetFeedbackData } from "@/sanity/sanity.query";
 import { feedbackCardTypes } from "../types/types";
-import Feedback from "./feedback";
+import Feedback from "./Feedback";
 import { useState, useEffect } from "react";
 
 export default function DisplayFeedback() {
