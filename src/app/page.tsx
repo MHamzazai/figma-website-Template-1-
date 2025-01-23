@@ -2,8 +2,8 @@ import Image from "next/image";
 import { ProductDataType } from "@/components/types/types";
 import { Archivo_Black } from "next/font/google";
 import Link from "next/link";
-import FeedbackButton from "../components/Feedback/feedbackButton";
-import DisplayFeedback from "../components/Feedback/DisplayFeedback";
+import FeedbackButton from "../components/feedbackCard/feedbackButton";
+import DisplayFeedback from "../components/feedbackCard/displayFeedback";
 import Hero from "@/components/HeroSection/Hero";
 import ProductCard from "@/components/ProductCard/ProductCard";
 
