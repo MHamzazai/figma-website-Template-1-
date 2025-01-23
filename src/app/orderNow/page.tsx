@@ -1,6 +1,6 @@
 'use client';
 import productContext from "@/contextApi/productContext";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useContext, useState } from "react";
 import sanityClient from "@/sanity/sanity.client";
 import dotenv from "dotenv";
@@ -10,7 +10,6 @@ dotenv.config();
 export default function OrderNow() {
 
   const context = useContext(productContext); // using the context to store the data
-  const router = useRouter(); // For navigation
 
   const [isSubmitting, setIsSubmitting] = useState(false); // For submit state
 
@@ -66,7 +65,6 @@ export default function OrderNow() {
         alert('This order already exists.');
         setIsSubmitting(false);
         form.reset();
-        router.push('/');
         return;
       }
 
@@ -82,7 +80,7 @@ export default function OrderNow() {
 
       alert('order submit successfully.');
       form.reset();  // Reset the form
-      router.push('/');
+      redirect('/');
     }
     catch (error) {
       console.error("Error placing order:", error);

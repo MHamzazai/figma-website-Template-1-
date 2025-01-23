@@ -13,22 +13,40 @@ const boldFont = Archivo_Black({
 });
 
 export default async function Home() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const basePath = process.env.NEXT_PUBLIC_BASE_URL;  // store the application base url from variable
 
-  const [data1, data2, data3, data4] = await Promise.all([
-    fetch(`${baseUrl}/api/productsData?category=hoodie`, {
-      cache: "no-cache",
-    }).then((res) => res.json() as Promise<ProductDataType[]>),
-    fetch(`${baseUrl}/api/productsData?category=jeans`, {
-      cache: "no-cache",
-    }).then((res) => res.json() as Promise<ProductDataType[]>),
-    fetch(`${baseUrl}/api/productsData?category=shirt`, {
-      cache: "no-cache",
-    }).then((res) => res.json() as Promise<ProductDataType[]>),
-    fetch(`${baseUrl}/api/productsData?category=tshirt`, {
-      cache: "no-cache",
-    }).then((res) => res.json() as Promise<ProductDataType[]>),
-  ]);
+  // data fetching for hoodies
+  const response1 = await fetch(`${basePath}/api/productsData?category=hoodie`, {
+    cache: "no-store",
+  });
+  // data fetching for jeans
+  const response2 = await fetch(`${basePath}/api/productsData?category=jeans`, {
+    cache: "no-store",
+  });
+  // data fetching for shirts
+  const response3 = await fetch(`${basePath}/api/productsData?category=shirt`, {
+    cache: "no-store",
+  });
+  // data fetching for T-shirts
+  const response4 = await fetch(`${basePath}/api/productsData?category=tshirt`, {
+    cache: "no-store",
+  });
+
+  if (!response1.ok && !response2.ok && !response3.ok && !response4.ok) {
+    console.log("Failed to fetch products from sanity (CMS).")
+    return (
+      <div className="">
+        <h1 className="text-3xl flex justify-center items-center">Fetch Failed from sanity !</h1>
+      </div>
+    )
+  }
+
+  // converting all the data in json format 
+  const data1: ProductDataType[] = await response1.json();
+  const data2: ProductDataType[] = await response2.json();
+  const data3: ProductDataType[] = await response3.json();
+  const data4: ProductDataType[] = await response4.json();
+
 
   return (
     <div className="w-full min-h-screen">
