@@ -12,7 +12,7 @@ const orderDetails = defineType({
     }),
 
     defineField({
-      name: "productName",
+      name: "name",
       title: "Product Name",
       type: "string",
     }),

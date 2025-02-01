@@ -62,7 +62,7 @@ export default async function Home() {
         lg:bg-[url(/images/Rectangle2.png)] lg:bg-cover"
         >
           {/* hero section content */}
-          <div className="hidden lg:flex flex-col justify-center items-start w-[43%] xl:w-[50%] h-fit my-20 lg:py-20 px-2">
+          <div className="hidden lg:flex flex-col justify-center items-start w-[43%] xl:w-[50%] h-fit my-20 lg:py-18 xl:py-20 px-2">
             <h1
               className={`${boldFont.className} uppercase text-[24px] tracking-normal leading-tight 
               md:text-3xl md:text-center lg:text-left lg:px-2 lg:text-4xl xl:text-6xl xl:px-8 xl:leading-[63px]
@@ -72,11 +72,13 @@ export default async function Home() {
               <span className="pl-1 xl:pl-3 lg:pl-2">that matches</span> your
               style
             </h1>
+
             <p className="text-sm lg:mt-2 lg:pl-2 text-gray-500 md:text-lg lg:text-base xl:text-lg xl:pl-9 lg:hover:opacity-75   transition-all duration-500">
               Browse through our diverse range of meticulously crafted garments,
               designed to bring out your individuality and cater to your sense
               of style.
             </p>
+
             <Link
               href={"#new-arrivals"}
               prefetch={true}
@@ -85,6 +87,7 @@ export default async function Home() {
             >
               Shop Now
             </Link>
+
           </div>
         </div>
 
@@ -133,7 +136,7 @@ export default async function Home() {
       {/*  new arrival hoodies section */}
       <section id="new-arrivals">
         <div
-          className="font-[sans-serif] py-4 mx-auto lg:max-w-[98%] sm:max-w-full border-b-2
+          className="font-[sans-serif] py-4 mx-auto lg:max-w-[89%] sm:max-w-full border-b-2
         border-gray-200 pb-28"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-extrabold my-16 text-center transition-all duration-300 hover:text-gray-700 hover:scale-105">

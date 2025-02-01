@@ -1,23 +1,33 @@
 'use client';
-import productContext from "@/contextApi/productContext";
-import { redirect } from "next/navigation";
-import { useContext, useState } from "react";
-import sanityClient from "@/sanity/sanity.client";
-import dotenv from "dotenv";
-import { GetOrderId } from "@/sanity/sanity.query";
-dotenv.config();
+import { orderType, ProductDataType } from "@/components/types/types";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function OrderNow() {
-
-  const context = useContext(productContext); // using the context to store the data
-
+  const [productData, setProductData] = useState<ProductDataType | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false); // For submit state
+  const router = useRouter(); // for navigating to home page
+  router.prefetch('/'); // Prefetch the home page
 
-  //check if the context is empty or undefined
-  if (!context) {
-    return new Error("context is empty or undefined.");
+  // Fetch product data from localStorage when the page loads
+  useEffect(() => {
+    const storedProductData = localStorage.getItem('orderProduct');
+
+    if (storedProductData) {
+      setProductData(JSON.parse(storedProductData));
+    }
+    else {
+      // Handle case if no product data is in localStorage
+      alert('Product data not found.');
+    }
+
+  }, []);
+
+  // Check if productData is available, else show an error
+  if (!productData) {
+    return <div>Error: Product data not available</div>;
   }
-  const { productData } = context; // extracting the state which store the data
 
   // Handle order submission
   const handleOrderSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -30,66 +40,90 @@ export default function OrderNow() {
     const color: string = form.colors.value; // Access the selected color value from user
     const quantity: string = form.quantity.value; // Access the given quantity value from user
 
-    const quantityNumber = Number(quantity); // converting the quantity in number
+    const quantityNumber = Number(quantity); // converting the quantity to a number
 
-
-    if (size === "default" || color === "default") {
+    if (size === 'default' || color === 'default') {
       alert('Please select both size and color properly');
       setIsSubmitting(false);
-      return
-    }
-
-    if (quantityNumber > 10) {
-      alert("Insufficient Quantity only '10' products Available");
       return;
     }
 
-    const orderDetails = {
-      productId: productData?.id || '',
-      productName: productData?.name || '',
-      description: productData?.description || '',
-      finalPrice: productData?.discountPercentage ? ((productData.price / productData.discountPercentage * 100) - (productData.price)).toFixed(0) : productData?.price || 0,
-      discountPercentage: productData?.discountPercentage || 0,
-      discountedPrice: productData?.discountPercentage ? ((productData.price / productData.discountPercentage) * 100).toFixed(0) : 0,
-      imageSrc: productData?.image || '',
-      size: size || '',
-      color: color || '',
-      newProduct: productData?.isNew || false,
-      quantity: quantityNumber,
-    };
-
-    try {
-      // if the order already exists 
-      const orderExists = await GetOrderId(orderDetails.productId, orderDetails.size, orderDetails.color);
-      if (orderExists) {
-        alert('This order already exists.');
-        setIsSubmitting(false);
-        form.reset();
-        return;
-      }
-
-
-      // Create a new document in the 'order-details' schema
-      await sanityClient.create({
-        _type: 'orderDetails',
-        projectId: process.env.SANITY_PROJECT_ID,
-        dataset: process.env.SANITY_DATASET,
-        token: process.env.SANITY_API_TOKEN,
-        ...orderDetails,
-      });
-
-      alert('order submit successfully.');
-      form.reset();  // Reset the form
-      redirect('/');
-    }
-    catch (error) {
-      console.error("Error placing order:", error);
-
-    }
-    finally {
+    if (quantityNumber > 10) {
+      alert("Insufficient Quantity, only '10' products are available");
       setIsSubmitting(false);
+      return;
+    }
+
+    if (
+      productData?.id &&
+      productData.colors &&
+      productData.description &&
+      productData.isNew &&
+      productData.slug &&
+      productData.sizes &&
+      productData.price &&
+      productData.image &&
+      productData.discountPercentage &&
+      productData.name
+    ) {
+
+      const orderDetails: orderType = {
+        productId: productData.id,
+        name: productData.name,
+        description: productData.description,
+        finalPrice: productData.discountPercentage
+          ? ((productData.price / productData.discountPercentage) * 100 - productData.price).toFixed(0)
+          : productData.price,
+        discountPercentage: productData.discountPercentage,
+        discountedPrice: productData.discountPercentage
+          ? ((productData.price / productData.discountPercentage) * 100).toFixed(0)
+          : 0,
+        imageSrc: productData.image,
+        size: size,
+        color: color,
+        newProduct: productData.isNew,
+        quantity: quantityNumber,
+      };
+
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/orderDetails`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderDetails),
+        });
+
+        // Handle message if the order exists
+        if (response.status === 409) {
+          // Order already exists
+          alert("Your Order Already Exists !"); // Show the alert with the message from the API
+          setIsSubmitting(false);
+          router.push('/'); // Redirect to the home page
+          return;
+        }
+
+        const data: Response = await response.json();
+        console.log(data);
+
+        if (response.ok) {
+          alert('Order submitted successfully');
+          form.reset();
+          router.push('/');
+
+        } else {
+          alert('Failed to submit order');
+        }
+      }
+      catch (error) {
+        console.error('Error submitting order:', error);
+      }
+      finally {
+        setIsSubmitting(false);
+      }
     }
   };
+
 
   return (
     <div className="flex flex-col justify-center items-center my-18 gap-7">
@@ -207,10 +241,11 @@ export default function OrderNow() {
                 Product Quantity
               </label>
               <input
-                type="text"
+                type="number"
                 name="quantity"
                 id="quantity"
-                maxLength={10}
+                max={10}
+                min={1}
                 required
                 className="mt-1 pl-6 p-2 w-full border border-gray-300 rounded"
               />
@@ -308,18 +343,15 @@ export default function OrderNow() {
             <div>
               <label
                 htmlFor="isNewProduct"
-                className="block text-sm lg:text-xl font-bold text-gray-700"
+                className="block text-sm lg:text-xl font-bold text-gray-700 mb-2"
               >
                 New Product
               </label>
-              <input
-                type="checkbox"
-                name="isNewProduct"
-                id="isNewProduct"
-                className="mt-1"
-                required
-                checked={productData?.isNew}
-                disabled={!productData?.isNew}
+              <Image
+                src={productData?.isNew ? "https://cdn-icons-png.flaticon.com/512/665/665939.png" : "https://media.tenor.com/kGq0C1FMxsAAAAAe/crossmark.png"}
+                alt="Image"
+                width={30}
+                height={30}
               />
             </div>
           </div>

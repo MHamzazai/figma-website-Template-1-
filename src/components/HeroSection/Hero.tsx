@@ -14,7 +14,7 @@ export default function Hero() {
       <div className="lg:hidden bg-[#f3f0f1]">
         {/* top side */}
         <section>
-          <div className="h-[20%] w-full md:h-[40%] flex flex-col justify-start">
+          <div className="h-[20%] w-full md:h-[42%] flex flex-col justify-start">
             {/* introduction */}
             <div className="w-full h-full flex flex-col justify-center px-4 pt-5 lg:px-10 lg:py-2">
               <h1
@@ -75,7 +75,7 @@ export default function Hero() {
                 width={800}
                 height={0}
                 alt="Model Image"
-                className="mx-auto h-auto w-4/5 md:mx-0 md:w-1/2"
+                className="mx-auto h-auto w-4/5 md:mx-0 md:w-[52%]"
               />
               {/* Star Image 1 */}
               <Image

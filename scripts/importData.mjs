@@ -43,7 +43,7 @@ async function uploadProduct(product) {
     if (imageId) {
       const document = {
         id: product._id,
-        _type: "products-data",
+        _type: "productsData",
         name: product.name,
         description: product.description,
         price: product.price,
@@ -58,6 +58,7 @@ async function uploadProduct(product) {
         isNew: product.isNew,
         sizes: product.sizes,
         colors: product.colors,
+        
       };
 
       const createdProduct = await client.create(document);

@@ -1,103 +1,129 @@
 'use client';
 import CartCard from "@/components/CartCard/CartCard";
 import { cartCardTypes } from "@/components/types/types";
-import sanityClient from "@/sanity/sanity.client";
-import { deleteSingleProduct, getAllCartProductIds, GetCartData } from "@/sanity/sanity.query";
+import { GetCartData } from "@/sanity/sanity.query";
+import WarnModal from "@/components/WarnModal/WarnModal";
+import MessageModal from "@/components/MessageModal/MessageModal";
 import { useEffect, useState } from "react";
 
-
 export default function Cart() {
-    const [cart, setCart] = useState<cartCardTypes[]>([]); // state to store the data of products
-    const [isLoading, setIsLoading] = useState(true); // state whichs shows the loading text when the state is not mount
+    const [cart, setCart] = useState<cartCardTypes[]>([]); // Cart state
+    const [isLoading, setIsLoading] = useState(true); // Loading state
+    const [isWarnModalOpen, setIsWarnModalOpen] = useState(false); // Warn modal state
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // Success modal state
+    const [selectedProduct, setSelectedProduct] = useState<string | null>(null); // Selected product for deletion
 
     useEffect(() => {
         // Fetch cart data from Sanity on page load
         const fetchCartData = async () => {
             try {
-                const data = await GetCartData(); // Fetch data from Sanity
-                setCart(data); // Set the cart data in state
+                const data = await GetCartData();
+                setCart(data);
             } catch (error) {
                 console.error("Error fetching cart data:", error);
             } finally {
-                setIsLoading(false); // Set loading to false once data is fetched
+                setIsLoading(false);
             }
         };
 
         fetchCartData();
     }, []);
 
-    //function which is used to delete a single product from cart 
-    const handleDeleteProduct = async (productName: string) => {
+    // Function to delete a single product from the cart
+    const handleDeleteProduct = async () => {
+        if (!selectedProduct) return;
+
+        // Immediately update the cart and show the success modal
+        setCart((prevCart) => prevCart.filter((item) => item.Name !== selectedProduct));
+        setIsWarnModalOpen(false); // Close the warn modal
+        setIsSuccessModalOpen(true); // Open the success modal
+
         try {
-            await deleteSingleProduct(productName); // Call the delete function
-            // Update the state to remove the deleted product
-            setCart((prevCart) => prevCart.filter((item) => item.name !== productName));
-            alert('Your Product Deleted sucessfully.')
+            // Send the delete request to the API in the background
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/deleteData`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ Name: selectedProduct }), // Pass the product name to the API
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Failed to delete product:", errorData.message);
+                alert("Product deletion failed on the server. Please refresh your cart.");
+            }
         } catch (error) {
             console.error("Error deleting product:", error);
+            alert("An error occurred while deleting the product. Please check your connection.");
         }
     };
 
-    // function which deletes all the cart products 
-    const clearCart = async () => {
-        try {
-            // Fetch all document IDs for the cart schema
-            const documentIds = await getAllCartProductIds();
 
-            if (documentIds.length > 0) {
-                // Delete all documents by their IDs
-                await sanityClient.delete(documentIds);
-                setCart([]);  // Clear cart from state as well
-                alert('Your Cart is clear.');
-            } else {
-                alert('No cart data to clear.')
-            }
-        } catch (error) {
-            console.error("Error clearing cart:", error);
-        }
-    }
+    // Open the warn modal and set selected product
+    const confirmDelete = (productName: string) => {
+        setSelectedProduct(productName);
+        setIsWarnModalOpen(true);
+    };
+
+    // Close the warn modal
+    const cancelDelete = () => {
+        setSelectedProduct(null);
+        setIsWarnModalOpen(false);
+    };
 
     return (
-        <div className='mb-14 w-full min-h-screen'>
+        <div className="mb-14 w-full min-h-screen">
             <div className="w-[95%] border-t-2 pt-10 mx-auto flex flex-col md:flex-row justify-between items-center">
-                <h1 className='font-[sans-serif] font-extrabold text-3xl uppercase pl-[14px] xl:pl-[194px]'>Your Cart</h1>
-                <button className="text-lg bg-red-500 px-4 rounded-xl mt-3 py-1 text-white font-bold lg:hover:scale-110
-                lg:hover:opacity-70 transition-all" onClick={clearCart}>Delete All Products</button>
+                <h1 className="font-[sans-serif] font-extrabold text-3xl uppercase pl-[14px] xl:pl-[194px]">Your Cart</h1>
             </div>
-            {/* if data is not fetch yet then show loading... */}
             {isLoading ? (
                 <h1 className="text-3xl font-bold flex justify-center items-center">Loading...</h1>
-                // if data fetch succesfully then show the block of code based on data
+            ) : cart.length > 0 ? (
+                <div className="mt-10 w-full space-x-4 grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 place-items-center">
+                    {cart.map((data: cartCardTypes, index: number) => (
+                        <div key={index}>
+                            <CartCard
+                                Name={data.Name}
+                                price={
+                                    data.discountPercentage
+                                        ? Number(
+                                            (data.price / data.discountPercentage) * 100 - data.price
+                                        )
+                                        : data.price
+                                }
+                                discountPercentage={data.discountPercentage}
+                                imageSrc={data.imageSrc}
+                                actualPrice={
+                                    data.discountPercentage
+                                        ? Number(((data.price / data.discountPercentage) * 100).toFixed(0))
+                                        : 0
+                                }
+                                sizes={data.sizes}
+                                colors={data.colors}
+                                deleteProduct={confirmDelete}
+                            />
+                        </div>
+                    ))}
+                </div>
             ) : (
-                cart.length > 0 ?
-                    <div className="mt-10 w-full space-x-4 grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 place-items-center">
-                        {cart.map((data: cartCardTypes, index: number) => {
-                            return (
-                                <div key={index}>
-                                    <CartCard
-                                        name={data.name}
-                                        price={data.discountPercentage
-                                            ? Number(((data.price / data.discountPercentage) * 100) - data.price)
-                                            : data.price
-                                        }
-                                        discountPercentage={data.discountPercentage}
-                                        imageSrc={data.imageSrc}
-                                        actualPrice={data.discountPercentage ? Number(((data.price / data.discountPercentage) * 100).toFixed(0)) : 0}
-                                        sizes={data.sizes}
-                                        colors={data.colors}
-                                        deleteProduct={handleDeleteProduct}
-                                    />
-                                </div>
-                            )
-                        })}
-                    </div>
-                    : // if the cart is empty  
-                    <h1 className="text-3xl font-bold flex justify-center items-center">Cart is Empty</h1>
-
+                <h1 className="text-3xl font-bold flex justify-center items-center">Cart is Empty</h1>
             )}
 
+            {/* WarnModal Component */}
+            <WarnModal
+                isVisible={isWarnModalOpen}
+                message="Are you sure you want to delete this product?"
+                onConfirm={handleDeleteProduct}
+                onCancel={cancelDelete}
+            />
 
-
+            {/* Success Modal */}
+            <MessageModal
+                isVisible={isSuccessModalOpen}
+                message="Product Deleted Successfully!"
+                onClose={() => setIsSuccessModalOpen(false)}
+            />
         </div>
-    )
+    );
 }

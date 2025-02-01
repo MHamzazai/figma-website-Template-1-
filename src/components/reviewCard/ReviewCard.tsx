@@ -12,18 +12,20 @@ export default function ReviewCard(props: ReviewkProps) {
     };
 
     return (
-        <div className="flex justify-center lg:hover:scale-105 transition-all lg:hover:shadow-xl">
-            <div className="flex flex-col items-start justify-between border-[1px] border-gray-300
-            w-full sm:w-[90%] md:w-[86%] h-full mx-auto my-4 rounded-xl py-6 px-4 bg-white">
+        <div className="flex justify-center flex-wrap">
+            <div className="flex flex-col justify-between border-[1px] border-gray-300 w-full h-64 mx-auto my-4 rounded-xl p-6 lg:hover:scale-95 transition-transform transform cursor-pointer duration-300 lg:hover:shadow-xl will-change-transform ">
 
                 {/* top section */}
-                <div className="flex justify-between items-center w-full mb-4">
+                <div className="flex justify-between items-center w-full mb-2">
+
                     {/* stars */}
-                    <Stars fillStars={props.ratingStars} />
+                    <div className="">
+                        <Stars fillStars={props.ratingStars} />
+                    </div>
 
                     <div className="relative inline-block">
                         <div onClick={toggleDropdown}>
-                            <Image width={30} height={30} src="/images/three-Dots.png" alt="menu" className='cursor-pointer' />
+                            <Image width={30} height={30} src="/images/three-Dots.png" alt="menu" className='cursor-pointer lg:hover:scale-95' />
                         </div>
                         {isOpen && (
                             <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg">
@@ -41,8 +43,8 @@ export default function ReviewCard(props: ReviewkProps) {
 
                 {/* User Feedback */}
                 <div className="flex flex-col justify-between h-full">
-                    <div className="flex items-center space-x-2 mb-4">
-                        <h1 className="font-bold py-2">{props.userName}</h1>
+                    <div className="flex items-center space-x-2 mb-2">
+                        <h1 className="font-bold py-1">{props.Name}</h1>
                         {/* Tick Image */}
                         <Image
                             src="/images/tick.png"

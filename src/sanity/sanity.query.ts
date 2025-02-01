@@ -2,12 +2,13 @@ import { groq } from "next-sanity";
 import sanityClient from "./sanity.client";
 import { cartCardTypes, ProductDataType } from "@/components/types/types";
 
+// 1. Query to get all products based on category
 export default async function GetCategoryProduct(
   category: string
 ): Promise<ProductDataType> {
   const productsData = await sanityClient.fetch(
     groq`
-*[_type == "products-data" && category == $category]{
+*[_type == "productsData" && category == $category]{
        name,
        price,
        discountPercentage,
@@ -19,13 +20,13 @@ export default async function GetCategoryProduct(
   return productsData;
 }
 
-// another query for productdetails page
+// 2. query for productdetails page based on slug
 export async function GetUserClickProduct(
   slug: string
 ): Promise<ProductDataType | null> {
   const SingleProductdata = await sanityClient.fetch(
     groq`
-    *[_type == "products-data" && slug.current == $slug][0]{
+    *[_type == "productsData" && slug.current == $slug][0]{
     id,
       name,
       description,
@@ -42,30 +43,32 @@ export async function GetUserClickProduct(
   return SingleProductdata || null;
 }
 
-// query for checking if the order already exists
+// 3. query for checking if the order already exists
 export async function GetOrderId(
   productId: string,
   size: string,
-  color: string
+  color: string,
+  finalPrice: string | number,
+  quantity: number
 ) {
   const orderData = await sanityClient.fetch(
     groq`
-    *[_type == "orderDetails" && productId == $productId && size == $size && color == $color]{
+    *[_type == "orderDetails" && productId == $productId && size == $size && color == $color && finalPrice == $finalPrice && quantity == $quantity]{
       _id
     }
     `,
-    { productId, size, color }
+    { productId, size, color, finalPrice, quantity }
   );
   return orderData.length > 0; // Return true if any order exists
 }
 
-// Query to get all cart items
+// 4.  Query to get all cart items
 export async function GetCartData(): Promise<cartCardTypes[]> {
   const cartData = await sanityClient.fetch(
     groq`
     *[_type == "cartSchema"]{
       _id,
-      name,
+      Name,
       discountPercentage,
       actualPrice,
       price,
@@ -77,34 +80,12 @@ export async function GetCartData(): Promise<cartCardTypes[]> {
   return cartData;
 }
 
-// removing single product data from cart
-export async function deleteSingleProduct(productName: string): Promise<void> {
-  const result = await sanityClient.fetch(
-    groq`
-    *[_type == "cartSchema" && name == $productName][0]._id
-    `,
-    { productName }
-  );
-  // If the product exists, delete it
-  if (result) {
-    await sanityClient.delete(result); // Use _id to delete the document
-    console.log(`Product with ID ${result} has been deleted.`);
-  } else {
-    console.error("Product not found.");
-  }
-}
-
-// Query to fetch all cart document IDs for deleting
-export async function getAllCartProductIds() {
-  return await sanityClient.fetch(groq`*[_type == "cartSchema"]._id`);
-}
-
-// query for fetching feedback card data
+// 5. query for fetching feedback card data
 export async function GetFeedbackData() {
   const feedbackData = await sanityClient.fetch(
     groq`
     *[_type == "feedbackSchema"]{
-    userName,
+    Name,
     description,
     starsNumbers,
     }
@@ -113,29 +94,12 @@ export async function GetFeedbackData() {
   return feedbackData;
 }
 
-// removing single product data from feedback
-export async function DeleteSingleFeedback(userName: string): Promise<void> {
-  const result = await sanityClient.fetch(
-    groq`
-    *[_type == "feedbackSchema" && userName == $userName][0]._id 
-    `,
-    { userName }
-  );
-  // If the product exists, delete it
-  if (result) {
-    await sanityClient.delete(result); // Use _id to delete the document because sanity wants it
-    console.log(`Feedback with User Name "${userName}" has been deleted.`);
-  } else {
-    console.error("Product not found.");
-  }
-}
-
-// query for fetching review card data
+// 6. query for fetching review card data
 export async function GetReviewData() {
   const feedbackData = await sanityClient.fetch(
     groq`
     *[_type == "reviewSchema"]{
-    userName,
+    Name,
     review,
     postDate,
     ratingStars,
@@ -145,18 +109,39 @@ export async function GetReviewData() {
   return feedbackData;
 }
 
-// removing single product data from review
-export async function DeleteSingleReview(userName: string): Promise<void> {
+// 7. Query for checking if the product already exists in cart
+export async function GetDataId(productName: string): Promise<boolean> {
+  try {
+    const cartProduct = await sanityClient.fetch(
+      groq`
+      *[_type == "cartSchema" && Name == $productName][0] {
+        _id
+      }
+      `,
+      { productName }
+    );
+
+    // Check if a valid product is found
+    return !!cartProduct; // Return true if cartProduct is not null/undefined
+  }
+  catch (error) {
+    console.error("Error checking if product exists in cart:", error);
+    throw new Error("Failed to check product existence.");
+  };
+};
+
+// 8. removing single product data from sanity
+export async function DeleteProduct(productName: string): Promise<void> {
   const result = await sanityClient.fetch(
     groq`
-    *[_type == "reviewSchema" && userName == $userName][0]._id 
+    *[(_type == "feedbackSchema" || _type == "reviewSchema" || _type == "cartSchema") && Name == $productName][0]._id
     `,
-    { userName }
+    { productName }
   );
   // If the product exists, delete it
   if (result) {
-    await sanityClient.delete(result); // Use _id to delete the document because sanity only wants it
-    console.log(`Review with User Name "${userName}" has been deleted.`);
+    await sanityClient.delete(result); // Use _id to delete the document
+    console.log(`Product with ID "${result}" has been deleted.`);
   } else {
     console.error("Product not found.");
   }

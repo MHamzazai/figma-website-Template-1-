@@ -1,53 +1,98 @@
 'use client';
 import Image from "next/image";
 import Link from "next/link";
-import { ProductDataType } from "@/components/types/types";
+import { cartApiType, ProductDataType } from "@/components/types/types";
 import styles from "@/styles/fonts.module.css";
-import { useContext } from "react";
-import productContext from "@/contextApi/productContext";
-import sanityClient from "@/sanity/sanity.client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import MessageModal from "@/components/MessageModal/MessageModal";
 
 export default function ProductPage({ params }: { params: ProductDataType }) {
+  const [isModalVisible, setIsModalVisible] = useState(false); // Modal visibility state
+  const [modalMessage, setModalMessage] = useState(""); // Modal message state
+  const [pending, setPending] = useState(false); // Pending state for API requests
 
-  const context = useContext(productContext); // using the context to store the data
-  if (!context) {
-    throw new Error("productContext must be used within a ProductProvider"); // checking the context is not undefined
-  }
-  const { setProductData } = context; // extract the setPrdouctData function from context
+  const router = useRouter(); // for navigating the user to different  pages
+  router.prefetch('/orderNow');
+
+  // Store product data in localStorage on initial load
+  useEffect(() => {
+    if (params) {
+      // Save product data to local storage when the page loads
+      localStorage.setItem('orderProduct', JSON.stringify(params));
+    }
+  }, [params]);
 
   //function which transfer the data to orderDetails page when the button is click
   const handleOrderClick = () => {
-    setProductData(params); // adds the data to context
+    router.push('/orderNow');
   }
 
-  //function which trnasfer the data to cart page when the button is click
+  // Function to transfer the data to the cart page when the button is clicked
   const handleAddtocartClick = async () => {
+    setPending(true); // Set the pending state to true
+
     try {
-      const doc = {
-        _type: "cartSchema",
-        name: params.name,
+      // Create a new cart document in Sanity
+      const cartData: cartApiType = {
+        Name: params.name,
         discountPercentage: params.discountPercentage || 0,
-        actualPrice: params.discountPercentage ? ((
-          (params.price / params.discountPercentage) * 100) - (params.price)).toFixed(0)
+        actualPrice: params.discountPercentage
+          ? ((params.price / params.discountPercentage) * 100 - params.price).toFixed(0)
           : params.price,
-        price: params.discountPercentage ? ((params.price / params.discountPercentage) * 100).toFixed(0) : 0,
+        price: params.discountPercentage
+          ? ((params.price / params.discountPercentage) * 100).toFixed(0)
+          : 0,
         sizes: params.sizes,
         colors: params.colors,
         imageSrc: params.image,
       };
-      // Create document in Sanity
-      await sanityClient.create(doc);
 
-      console.log("Product data added to cart schema in Sanity.");
-      alert('Your product added successfully to Cart');
+      // Send the cart data to the API route
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cartData`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartData),
+      });
 
-    } catch (error) {
+      // Handle case when the product already exists in cart
+      if (response.status === 409) {
+        setPending(false); // Set the pending state to false
+        setIsModalVisible(true);
+        setModalMessage("Your Product Already Exists In Cart Look Carefully!");
+        return;
+      }
+      else if (response.ok) {
+        setPending(false); // Set the pending state to false
+        setIsModalVisible(true);
+        setModalMessage("Your Product Added Successfully to Cart!");
+      }
+      else {
+        // Validate API response
+        const responseData = await response.json();
+        setModalMessage(
+          `Failed to add product to cart: ${responseData.message || "Unknown error"}`
+        );
+      };
+    }
+    catch (error) {
       console.error("Error adding product to cart in Sanity", error);
+      setModalMessage("An error occurred while adding the product to the cart. Please try again.");
+    }
+    finally {
+      // Hide the modal automatically after 3 seconds
+      setTimeout(() => setIsModalVisible(false)
+        , 8000);
     }
   };
 
   return (
     <div className="">
+      {/* Render the modal when visible */}
+      <MessageModal message={modalMessage} isVisible={isModalVisible} onClose={() => setIsModalVisible(false)} />
+
       {/* top side  */}
       <div className="w-[95%] border-t-2 pt-10 h-fit flex flex-col md:flex-row items-center mx-auto overflow-hidden">
         {/* sub left / sub top side  */}
@@ -180,34 +225,16 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
               New Product
             </h1>
           </div>
+
           {/*  checking the product is new  */}
           <div className="flex mt-2 space-x-1 mb-4">
             <div className="">
-              {params.isNew ? (
-                <div className="">
-                  <Image
-                    src={
-                      "https://cdn-icons-png.flaticon.com/512/665/665939.png"
-                    }
-                    width={50}
-                    height={50}
-                    alt="Tick image"
-                    className=""
-                  />
-                </div>
-              ) : (
-                <div className="">
-                  <Image
-                    src={
-                      "https://media.tenor.com/kGq0C1FMxsAAAAAe/crossmark.png"
-                    }
-                    width={50}
-                    height={50}
-                    alt="Tick image"
-                    className=""
-                  />
-                </div>
-              )}
+              <Image
+                src={params.isNew ? "https://cdn-icons-png.flaticon.com/512/665/665939.png" : "https://media.tenor.com/kGq0C1FMxsAAAAAe/crossmark.png"}
+                alt="Image"
+                width={40}
+                height={40}
+              />
             </div>
 
             <div className="w-full flex justify-center space-x-12 gap-4 items-center cursor-pointer">
@@ -215,14 +242,15 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
               <div className="w-1/4">
 
                 <Link
-                  href={"/"}
+                  href={'#'}
                   onClick={handleAddtocartClick}
-                  className={`${styles.fontSatoshi}
-                                text-white cursor-pointer bg-black text-center py-2 rounded-3xl
-                                lg:hover:scale-110 lg:focus:bg-gray-800 transition-all px-3`}
+                  className={`${styles.fontSatoshi} ${pending ? "opacity-50 cursor-not-allowed pointer-events-none" : "opacity-100 cursor-pointer"} 
+                  text-white bg-black text-center py-2 rounded-3xl
+                  focus:bg-gray-800 transition-all px-3 focus:scale-95`}
                 >
-                  Add to Cart
+                  {pending ? "Processing..." : "Add to Cart"}
                 </Link>
+
               </div>
 
               <div className="w-1/4">

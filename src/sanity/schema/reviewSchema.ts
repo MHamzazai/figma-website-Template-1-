@@ -6,7 +6,7 @@ const reviewSchema = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "userName",
+      name: "Name",
       title: "User Name",
       type: "string",
     }),

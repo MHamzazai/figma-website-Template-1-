@@ -6,7 +6,7 @@ const cartSchema = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "name",
+      name: "Name",
       title: "Product Name",
       type: "string",
     }),
