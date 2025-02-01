@@ -8,7 +8,6 @@ export default function OrderNow() {
   const [productData, setProductData] = useState<ProductDataType | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false); // For submit state
   const router = useRouter(); // for navigating to home page
-  router.prefetch('/'); // Prefetch the home page
 
   // Fetch product data from localStorage when the page loads
   useEffect(() => {
