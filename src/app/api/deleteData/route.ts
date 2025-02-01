@@ -18,23 +18,14 @@ export async function DELETE(req: NextRequest) {
     console.log(`Deleting product named: "${Name}" from Sanity...`);
 
     // Attempt to delete the product
-    const productDelete: void = await DeleteProduct(Name);
+    await DeleteProduct(Name);
 
     return NextResponse.json(
       { message: "Product deleted successfully!" },
       { status: 200 }
     );
-  } catch (error: any) {
-    // Handle specific error cases
+  } catch (error) {
     console.error("Error deleting product:", error);
-
-    if (error.name === "SyntaxError") {
-      return NextResponse.json(
-        { message: "Invalid request body." },
-        { status: 400 }
-      );
-    }
-
     return NextResponse.json(
       { message: "Error deleting product or product not found." },
       { status: 500 }

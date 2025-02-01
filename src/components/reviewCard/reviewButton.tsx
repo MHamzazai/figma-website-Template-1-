@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import ReviewModal from './reviewModal';
 import { reviewCardTypes } from '../types/types';
-import sanityClient from '@/sanity/sanity.client';
 import UseContext from '../ContextApi/stateContext/useContext';
 import MessageModal from '../MessageModal/MessageModal';
 

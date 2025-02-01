@@ -69,7 +69,7 @@ export default function ReviewModal(
                             type="number"
                             value={ratingStars}
                             onChange={(e) => {
-                                let value = Math.max(1, Math.min(5, Number(e.target.value)));
+                                const value = Math.max(1, Math.min(5, Number(e.target.value)));
                                 setRatingStars(value);
                             }} className="w-full p-2 border border-gray-300 rounded mt-1"
                             min={0}

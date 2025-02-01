@@ -66,7 +66,7 @@ export default function FeedbackModal({
                             type="number"
                             value={starsNumbers}
                             onChange={(e) => {
-                                let value = Math.max(1, Math.min(5, Number(e.target.value)));
+                                const value = Math.max(1, Math.min(5, Number(e.target.value)));
                                 setStarsNumbers(value);
                             }}
                             className="w-full p-2 border border-gray-300 rounded mt-1"
