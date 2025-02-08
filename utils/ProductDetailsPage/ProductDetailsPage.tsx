@@ -13,7 +13,6 @@ export default function ProductPage({ params }: { params: ProductDataType }) {
   const [pending, setPending] = useState(false); // Pending state for API requests
 
   const router = useRouter(); // for navigating the user to different  pages
-  router.prefetch('/orderNow');
 
   // Store product data in localStorage on initial load
   useEffect(() => {

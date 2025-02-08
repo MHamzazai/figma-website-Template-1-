@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
     !imageSrc ||
     !size ||
     !color ||
-    !newProduct ||
-    quantity === undefined
+    !quantity ||
+    newProduct === undefined
   ) {
     return NextResponse.json(
       { message: "Missing required fields" },
@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
       quantity,
     });
 
+    console.log("Order Submit For Product Name:", name.toUpperCase());
     return NextResponse.json(
       { message: "Order submitted successfully", order },
       { status: 200 }
@@ -92,5 +93,5 @@ export async function POST(req: NextRequest) {
       { message: "Internal Server Error", error },
       { status: 500 }
     );
-  };
-};
+  }
+}

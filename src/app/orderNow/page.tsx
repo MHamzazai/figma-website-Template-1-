@@ -3,9 +3,12 @@ import { orderType, ProductDataType } from "@/components/types/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import MessageModal from "@/components/MessageModal/MessageModal";
 
 export default function OrderNow() {
   const [productData, setProductData] = useState<ProductDataType | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false); // For submit state
   const router = useRouter(); // for navigating to home page
 
@@ -20,7 +23,6 @@ export default function OrderNow() {
       // Handle case if no product data is in localStorage
       alert('Product data not found.');
     }
-
   }, []);
 
   // Check if productData is available, else show an error
@@ -28,21 +30,21 @@ export default function OrderNow() {
     return <div>Error: Product data not available</div>;
   }
 
+
   // Handle order submission
   const handleOrderSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    // Accessing the form elements using event.target
-    const form: HTMLFormElement = event.target as HTMLFormElement;
-    const size: string = form.sizes.value;  // Access the selected size value from user
-    const color: string = form.colors.value; // Access the selected color value from user
-    const quantity: string = form.quantity.value; // Access the given quantity value from user
+    const form = event.target as HTMLFormElement;
+    const size = form.sizes.value;
+    const color = form.colors.value;
+    const quantity = form.quantity.value;
 
-    const quantityNumber = Number(quantity); // converting the quantity to a number
+    const quantityNumber = Number(quantity);
 
-    if (size === 'default' || color === 'default') {
-      alert('Please select both size and color properly');
+    if (size === "default" || color === "default") {
+      alert("Please select both size and color properly");
       setIsSubmitting(false);
       return;
     }
@@ -57,7 +59,7 @@ export default function OrderNow() {
       productData?.id &&
       productData.colors &&
       productData.description &&
-      productData.isNew &&
+      productData.isNew !== undefined &&
       productData.slug &&
       productData.sizes &&
       productData.price &&
@@ -65,7 +67,6 @@ export default function OrderNow() {
       productData.discountPercentage &&
       productData.name
     ) {
-
       const orderDetails: orderType = {
         productId: productData.id,
         name: productData.name,
@@ -86,36 +87,32 @@ export default function OrderNow() {
 
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/orderDetails`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(orderDetails),
         });
 
-        // Handle message if the order exists
         if (response.status === 409) {
-          // Order already exists
-          alert("Your Order Already Exists !"); // Show the alert with the message from the API
-          setIsSubmitting(false);
-          router.push('/'); // Redirect to the home page
+          setModalVisible(true);
+          setModalMessage("Your Order Already Exists!");
+          form.reset();
           return;
         }
 
-        const data: Response = await response.json();
-        console.log(data);
+        const data = await response.json();
 
         if (response.ok) {
-          alert('Order submitted successfully');
+          setModalVisible(true);
+          setModalMessage("Order submitted successfully");
           form.reset();
-          router.push('/');
-
         } else {
-          alert('Failed to submit order');
+          alert("Failed to submit order");
         }
       }
       catch (error) {
-        console.error('Error submitting order:', error);
+        console.error("Error submitting order:", error);
       }
       finally {
         setIsSubmitting(false);
@@ -123,6 +120,13 @@ export default function OrderNow() {
     }
   };
 
+  // Handler to close the modal
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    router.prefetch("/");
+    router.push("/");
+
+  };
 
   return (
     <div className="flex flex-col justify-center items-center my-18 gap-7">
@@ -131,7 +135,8 @@ export default function OrderNow() {
       </h1>
 
       <form onSubmit={handleOrderSubmit} className="w-[95%] md:w-[80%] lg:w-[80%] mx-auto p-4 bg-teal-50 rounded-xl shadow-xl flex flex-col justify-center items-center">
-        <div className="flex flex-col md:flex-row gap-14 py-4 ">
+
+        <div className="flex flex-col-reverse md:flex-row gap-14 py-4 ">
           <div className="space-y-6 lg:space-y-2">
             <div>
               <label
@@ -254,6 +259,7 @@ export default function OrderNow() {
           </div>
 
           <div className="space-y-6 lg:space-y-7">
+
             <div>
               <label
                 htmlFor="description"
@@ -267,24 +273,6 @@ export default function OrderNow() {
                 name="description"
                 id="description"
                 value={productData?.description}
-                disabled
-                required
-                className="mt-1 p-2 w-full border border-gray-300 rounded"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="imageSize"
-                className="block text-sm lg:text-xl font-bold text-gray-700"
-              >
-                Product Image Src
-              </label>
-              <input
-                type="text"
-                name="imageSize"
-                value={productData?.image}
-                id="imageSize"
                 disabled
                 required
                 className="mt-1 p-2 w-full border border-gray-300 rounded"
@@ -353,19 +341,47 @@ export default function OrderNow() {
                 height={30}
               />
             </div>
+
+          </div>
+
+
+          <div className="flex flex-col justify-center items-center space-y-3">
+            <label
+              htmlFor="imageSize"
+              className="block text-sm lg:text-2xl font-bold text-gray-700"
+            >
+              Product Image
+            </label>
+            <div className="rounded- p-2">
+              <Image src={productData.image} alt="Product Image" width={160} height={40} className="rounded-md  shadow-lg shadow-black px-4" />
+            </div>
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`p-2 bg-blue-600 text-white rounded w-2/3 lg:w-1/2 ${isSubmitting ? 'opacity-50' : 'lg:hover:scale-105 transition-all duration-500'}`}
-        >
-          {isSubmitting ? 'Submitting...' : 'Place Order'}
-        </button>
+        <div className="w-2/3 lg:w-1/2 lg:hover:scale-105 transition-all duration-300 transform-gpu ease-in-out">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`p-2 bg-blue-600 text-white rounded w-full ${isSubmitting
+              ? 'opacity-50'
+              : 'opacity-100'
+              }`}
+          >
+            {isSubmitting ? 'Placing...' : 'Place Order'}
+          </button>
+        </div>
+
 
 
       </form>
+
+      {/* The modal component */}
+      <MessageModal
+        isVisible={modalVisible}
+        message={modalMessage}
+        onClose={handleCloseModal}
+      />
+
     </div>
   );
 }
